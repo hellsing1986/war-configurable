@@ -1,0 +1,22 @@
+<p>
+    remoteHost = <%=httpReq.getRemoteHost()%>
+</p>
+<p>
+    remoteAddr = <%=httpReq.getRemoteAddr()%>
+</p>
+<p>
+    Proxy-Client-IP = <%=httpReq.getHeader("Proxy-Client-IP")%>
+</p>
+<p>
+    WL-Proxy-Client-IP = <%=httpReq.getHeader("WL-Proxy-Client-IP")%>
+</p>
+<p>
+    HTTP_CLIENT_IP = <%=httpReq.getHeader("HTTP_CLIENT_IP")%>
+</p>
+<p>
+    HTTP_X_FORWARDED_FOR = <%=httpReq.getHeader("HTTP_X_FORWARDED_FOR")%>
+</p>
+
+<% for(int i = 0; i < list.size(); i++) { %>
+<p><%=list.get(i)%></p>
+<% } %>

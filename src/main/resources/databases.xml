@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<databases>
+    <database>
+        <name>rpweb</name>
+        <type>OracleDataSource</type>
+        <driverType>thin</driverType>
+        <className>oracle.jdbc.pool.OracleDataSource</className>
+        <serverName>10.1.3.168</serverName>
+        <portNumber>1521</portNumber>
+        <databaseName>vnptvms</databaseName>
+        <user>rpweb</user>
+        <password>123321</password>
+        <maximumPoolSize>3</maximumPoolSize>
+    </database>
+    <database>
+        <name>rpweb2</name>
+        <type>OracleDriver</type>
+        <className>oracle.jdbc.driver.OracleDriver</className>
+        <url>jdbc:oracle:thin:@10.1.3.168:1521/vnptvms</url>
+        <user>rpweb</user>
+        <password>123321</password>
+        <maximumPoolSize>3</maximumPoolSize>
+    </database>
+</databases>
