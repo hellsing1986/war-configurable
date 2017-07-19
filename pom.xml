@@ -50,11 +50,11 @@
             <artifactId>jdbi</artifactId>
             <version>2.78</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.oracle</groupId>
             <artifactId>jdbc</artifactId>
             <version>12.1.0.2</version>
-        </dependency>
+        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
             <groupId>org.json</groupId>
