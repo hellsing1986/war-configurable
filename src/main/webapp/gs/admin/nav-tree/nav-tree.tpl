@@ -1,7 +1,7 @@
 def _select = GroovyStreamTemplate.component("_select")
 
 layout '../../gs/_layout_admin.tpl',
-title: 'whoiam',
+title: 'nav manager',
 mainContent: contents {
     p("remoteHost = ${httpReq.getRemoteHost()}")
     newLine()
