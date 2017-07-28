@@ -24,6 +24,16 @@
     </servlet-mapping>-->
 
     <servlet>
+        <servlet-name>ConfiguableLayout</servlet-name>
+        <servlet-class>vn.vnptnet.archetype.warconfigurable.ConfiguableLayout</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ConfiguableLayout</servlet-name>
+        <url-pattern>/app/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Groovy</servlet-name>
         <servlet-class>groovy.servlet.GroovyServlet</servlet-class>
     </servlet>
@@ -41,6 +51,7 @@
     <filter-mapping>
         <filter-name>rewriteGroovyFilter</filter-name>
         <url-pattern>/gs/*</url-pattern>
+        <url-pattern>/admin/*</url-pattern>
         <!--<url-pattern>*.groovy</url-pattern>-->
     </filter-mapping>
 
