@@ -2,10 +2,8 @@ package vn.vnptnet.archetype.warconfigurable;
 
 import groovy.lang.Writable;
 import groovy.text.StreamingTemplateEngine;
-import org.apache.commons.lang3.StringUtils;
 import vn.vnptnet.archetype.warconfigurable.util.GroovyStreamTemplate;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +13,7 @@ import java.io.PrintWriter;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class ConfiguableLayout extends HttpServlet {
+public class ConfigurableLayout extends HttpServlet {
     //private String message;
     private static StreamingTemplateEngine engine = new groovy.text.StreamingTemplateEngine();
     public void init() throws ServletException {
@@ -38,7 +36,7 @@ public class ConfiguableLayout extends HttpServlet {
         //out.println("<h1>" + request.getRequestURI() + "</h1>");
         //out.println("<h1>" + request.getRequestURL() + "</h1>");
         LayoutConfiguration lc = null;
-        List<ConfiguablePage> pages = null;
+        List<ConfigurablePage> pages = null;
         try {
             lc = LayoutConfiguration.getLayoutConfiguration("R_12_R_4_8");
             pages = lc.getPages();
@@ -48,7 +46,7 @@ public class ConfiguableLayout extends HttpServlet {
         }
         LinkedHashMap<String,String> bindOfLayout = new LinkedHashMap<>();
         for (int i=0;i<pages.size();i++){
-            ConfiguablePage page = pages.get(i);
+            ConfigurablePage page = pages.get(i);
             try {
                 String pageBody = page.onViewRequest(request, response);
                 bindOfLayout.put("page_"+(i+1), pageBody);

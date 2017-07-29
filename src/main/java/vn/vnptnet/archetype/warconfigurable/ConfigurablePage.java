@@ -1,6 +1,8 @@
 package vn.vnptnet.archetype.warconfigurable;
 
+import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
+import groovy.lang.Script;
 import groovy.lang.Writable;
 import groovy.text.StreamingTemplateEngine;
 import vn.vnptnet.archetype.warconfigurable.util.GroovyStreamTemplate;
@@ -11,7 +13,7 @@ import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Properties;
 
-public class ConfiguablePage {
+public class ConfigurablePage {
     private String name;
     private Properties properties;
     private File viewTemplateFile;
@@ -19,7 +21,7 @@ public class ConfiguablePage {
     private File configTemplateFile;
     private static StreamingTemplateEngine engine = new groovy.text.StreamingTemplateEngine();
     private static GroovyShell shell = new GroovyShell();
-    public ConfiguablePage(String name, Properties properties) throws Exception {
+    public ConfigurablePage(String name, Properties properties) throws Exception {
         setViewTemplateFile(getFile(name,"view"));
         setEditTemplateFile(getFile(name,"edit"));
         setConfigTemplateFile(getFile(name,"config"));
@@ -32,27 +34,30 @@ public class ConfiguablePage {
         ).getPath());
     }
 
-    private LinkedHashMap<String,Object> getBind(ServletRequest request, ServletResponse response){
-        LinkedHashMap<String,Object> bind = new LinkedHashMap<>();
-        bind.put("request", request);
-        bind.put("response", response);
-        bind.put("properties", properties);
+    private Binding getBind(ServletRequest request, ServletResponse response){
+        //LinkedHashMap<String,Object> bind = new LinkedHashMap<>();
+        Binding bind = new Binding();
+        bind.setVariable("request", request);
+        bind.setVariable("response", response);
+        bind.setVariable("properties", properties);
         return bind;
     }
 
     public String onViewRequest(ServletRequest request, ServletResponse response) throws Exception {
-        LinkedHashMap<String,Object> bind = getBind(request, response);
-        Writable template = engine.createTemplate(getFile(getName(),"view")).make(bind);
-        return template.toString();
+        Binding bind = getBind(request, response);
+        Script script = shell.parse(getFile(getName(),"view"));
+        script.setBinding(bind);
+        //Writable template = engine.createTemplate(getFile(getName(),"view")).make(bind);
+        return (String) script.run();
     }
     public String onEditRequest(ServletRequest request, ServletResponse response) throws Exception {
-        LinkedHashMap<String,Object> bind = getBind(request, response);
+        //LinkedHashMap<String,Object> bind = getBind(request, response);
         return "";
     }
     public String onConfigRequest(ServletRequest request, ServletResponse response) throws Exception {
-        LinkedHashMap<String,Object> bind = getBind(request, response);
-        Writable template = engine.createTemplate(getFile(getName(),"config")).make(bind);
-        return template.toString();
+        //LinkedHashMap<String,Object> bind = getBind(request, response);
+        //Writable template = engine.createTemplate(getFile(getName(),"config")).make(bind);
+        return "";
     }
 
     public String getName() {

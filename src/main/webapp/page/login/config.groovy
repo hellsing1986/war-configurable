@@ -1,2 +1,6 @@
+import javax.servlet.ServletRequest
+import javax.servlet.http.HttpServletRequest
 
-return "login form config"
+HttpServletRequest req = request;
+
+return "login form config "+req.pathInfo
