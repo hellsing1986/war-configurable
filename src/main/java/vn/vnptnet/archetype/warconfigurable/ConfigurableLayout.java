@@ -23,10 +23,11 @@ public class ConfigurableLayout extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        // response.sendRedirect("/index.jsp");
         // Set response content type
-        response.setContentType("text/html");
+
         // Actual logic goes here.
-        PrintWriter out = response.getWriter();
+
         //out.println("<h1>" + message + "</h1>");
         //out.println("<h1>" + request.getServletPath() + "</h1>");
         //out.println("<h1>" + request.getContextPath() + "</h1>");
@@ -62,7 +63,13 @@ public class ConfigurableLayout extends HttpServlet {
             e.printStackTrace();
             throw new IOException(e);
         }
+        if(request.getAttribute("redirect") != null){
+            response.sendRedirect(request.getAttribute("redirect").toString());
+        }
         //String htmlbody = template.toString();
+        //response.sendRedirect("/index.jsp");
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
         out.println(template.toString());
     }
 
