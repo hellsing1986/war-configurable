@@ -8,13 +8,15 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 HttpServletRequest httpreq = request
+HttpServletResponse httpres = response
 ServletRequest req = request
 ServletResponse res = response
+//httpreq.setAttribute("redirect","${httpreq.getContextPath()}/index.jsp")
 //res.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY)
 //res.setHeader("Location", "${httpreq.getContextPath()}/index.jsp")
-
-def username = req.getParameter("username")
-def password = req.getParameter("password")
+//httpres.sendRedirect("/index.jsp")
+def username = req.getParameter("username") ?: ""
+def password = req.getParameter("password") ?: ""
 
 def html = """
 <form method="POST">
