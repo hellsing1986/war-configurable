@@ -26,13 +26,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class App extends ResourceConfig{
     private static ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration> builder = null;
+    private static ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration> navbuilder = null;
     public static ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration> getBuilder(){
         return builder;
+    }
+    public static ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration> getNavBuilder(){
+        return navbuilder;
     }
     public App(){
         packages("vn.vnptnet.archetype.warconfigurable.rest");
         setupAppConfiguration();
         setupDatabaseConfiguration();
+        setupNavConfiguration();
     }
     public void setupAppConfiguration(){
         System.out.println("ApplicationProperties "+this.getClass().getClassLoader().getResource("app.properties").getPath());
@@ -45,14 +50,24 @@ public class App extends ResourceConfig{
                                 .setThrowExceptionOnMissing(true)
                                 .setListDelimiterHandler(new DefaultListDelimiterHandler('|'))
                                 .setIncludesAllowed(false));
-        //configuration = builder.getConfiguration();
-        /*builder.addEventListener(ConfigurationBuilderEvent.CONFIGURATION_REQUEST,
-                (Event event)->{
-                    boolean needed = builder.getReloadingController().checkForReloading(null);
-                    System.out.println(needed?"need reload":"no need reload");
-                });*/
         PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(builder.getReloadingController(),
-                null, 1, TimeUnit.SECONDS);
+                null, 10, TimeUnit.SECONDS);
+        trigger.start();
+    }
+    public void setupNavConfiguration(){
+        System.out.println("ApplicationProperties "+this.getClass().getClassLoader().getResource("navigation.properties").getPath());
+        //this.getClass().getResource("app.properties").getPath();
+        String configFilePath = this.getClass().getClassLoader().getResource("app.properties").getPath();
+        navbuilder =
+                new ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+                        .configure(new Parameters().properties()
+                                .setFileName(configFilePath)
+                                .setThrowExceptionOnMissing(true)
+                                .setListDelimiterHandler(new DefaultListDelimiterHandler('|'))
+                                .setIncludesAllowed(false));
+
+        PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(navbuilder.getReloadingController(),
+                null, 10, TimeUnit.SECONDS);
         trigger.start();
     }
     public void setupDatabaseConfiguration(){
