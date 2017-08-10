@@ -125,7 +125,7 @@
 
     </dependencies>
     <build>
-        <finalName>configurable</finalName>
+        <finalName>wc</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -172,7 +172,7 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>TomcatServer</server>
-                    <path>/configurable</path>
+                    <path>/wc</path>
                 </configuration>
             </plugin>
         </plugins>
