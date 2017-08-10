@@ -26,8 +26,8 @@ public class ConfigurableLayout extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String ctxPath = request.getContextPath();
-
+        String ctxPath = request.getServletPath() + request.getPathInfo();
+        System.out.println("ctxPath = "+ctxPath);
         try {
             PropertiesConfiguration cfg = App.getNavBuilder().getConfiguration();
             String rootCtxPath = cfg.getString("contextpath");
@@ -35,6 +35,7 @@ public class ConfigurableLayout extends HttpServlet {
 
             Optional<String> oPageName = pageNames.stream().filter(ipageName->{
                 String path = cfg.getString(ipageName+".path");
+                System.out.println("    compare to = "+rootCtxPath+path);
                 return ctxPath.equalsIgnoreCase(rootCtxPath+path);
             }).findFirst();
 
@@ -55,30 +56,18 @@ public class ConfigurableLayout extends HttpServlet {
             //out.println("<h1>" + request.getPathTranslated() + "</h1>");
             //out.println("<h1>" + request.getRequestURI() + "</h1>");
             //out.println("<h1>" + request.getRequestURL() + "</h1>");
-            LayoutConfiguration lc = null;
-            List<ConfigurablePage> pages = null;
-
-            lc = LayoutConfiguration.getLayoutConfiguration(layoutName);
-            pages = lc.getPages();
+            LayoutConfiguration lc = LayoutConfiguration.getLayoutConfiguration(layoutName);
+            List<ConfigurablePage> pages = lc.getPages(pageName);
 
             LinkedHashMap<String,String> bindOfLayout = new LinkedHashMap<>();
             for (int i=0;i<pages.size();i++){
                 ConfigurablePage page = pages.get(i);
-                try {
-                    String pageBody = page.onViewRequest(request, response);
-                    bindOfLayout.put("page_"+(i+1), pageBody);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new IOException(e);
-                }
+
+                String pageBody = page.onViewRequest(request, response);
+                bindOfLayout.put("page_"+(i+1), pageBody);
             }
-            Writable template = null;
-            try {
-                template = engine.createTemplate(GroovyStreamTemplate.class.getClassLoader().getResource("../../layout/"+lc.getLayoutName()+".html")).make(bindOfLayout);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                throw new IOException(e);
-            }
+            Writable template = engine.createTemplate(GroovyStreamTemplate.class.getClassLoader().getResource("../../layout/"+lc.getLayoutName()+".html")).make(bindOfLayout);
+
             if(request.getAttribute("redirect") != null){
                 response.sendRedirect(request.getAttribute("redirect").toString());
             }
@@ -93,6 +82,9 @@ public class ConfigurableLayout extends HttpServlet {
             throw new ServletException(e);
         } catch (IOException e) {
             //e.printStackTrace();
+            throw new IOException(e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
             throw new IOException(e);
         } catch (Exception e) {
             throw new ServletException(e);

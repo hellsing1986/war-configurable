@@ -48,22 +48,22 @@ public class App extends ResourceConfig{
                         .configure(new Parameters().properties()
                                 .setFileName(configFilePath)
                                 .setThrowExceptionOnMissing(true)
-                                .setListDelimiterHandler(new DefaultListDelimiterHandler('|'))
+                                .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
                                 .setIncludesAllowed(false));
         PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(builder.getReloadingController(),
                 null, 10, TimeUnit.SECONDS);
         trigger.start();
     }
     public void setupNavConfiguration(){
-        System.out.println("ApplicationProperties "+this.getClass().getClassLoader().getResource("navigation.properties").getPath());
+        System.out.println("NavigationProperties "+this.getClass().getClassLoader().getResource("navigation.properties").getPath());
         //this.getClass().getResource("app.properties").getPath();
-        String configFilePath = this.getClass().getClassLoader().getResource("app.properties").getPath();
+        String configFilePath = this.getClass().getClassLoader().getResource("navigation.properties").getPath();
         navbuilder =
                 new ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
                         .configure(new Parameters().properties()
                                 .setFileName(configFilePath)
                                 .setThrowExceptionOnMissing(true)
-                                .setListDelimiterHandler(new DefaultListDelimiterHandler('|'))
+                                .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
                                 .setIncludesAllowed(false));
 
         PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(navbuilder.getReloadingController(),
